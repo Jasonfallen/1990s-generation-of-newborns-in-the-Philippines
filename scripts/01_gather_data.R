@@ -1,23 +1,29 @@
 #### Preamble ####
-# Purpose: Clean the survey data downloaded from [https://dhsprogram.com/search/index.cfm?_srchd=1&bydoctype=publication&bypubtype=26%2C5%2C39%2C30%2C21%2C100&byyear=1999&byyear=1998&byyear=1997&byyear=1996&byyear=1995&byyear=1994&byyear=1993&byyear=1992&byyear=1991&byyear=1990&byyear=1989&byyear=1988&byyear=1987&bylanguage=2]
-# Author: Haocheng Xu, Jing Li, Wenxuan Li
-# Data: 08 April, 2021
+# Purpose: Clean the data downloaded from "Turkey: DHS, 1998 - Final Report"
+# Author: HaoCheng Xu
+# Data: 27 April 2022
 # Contact: haocheng.xu@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: 
-# - Need to have downloaded the ACS data and saved it to inputs/data
-# - Don't forget to gitignore it!
+
+
 
 
 #### Workspace setup ####
 
-library(janitor)
-library(pdftools)
-library(purrr)
-library(tidyverse)
+# Load packages
+library(reshape2)
 library(stringi)
-library(plyr)
-all_content<-pdf_text("D:\\Work\\part-time_work\\4.2\\project\\input\\data\\FR18.pdf")#read the pdf 
-#choose to the page where we get the raw data
-page<-stri_split_lines(all_content[[76]])[[1]]
-write.table(page,"D:\\Work\\part-time_work\\4.2\\project\\output\\data\\raw_data.csv")
+library(pointblank)
+library(tidyverse)
+
+#import data from inputs folder and name it as Covid_19.csv
+Covid_19 <- read.csv("inputs/data/Covid_19.csv")
+
+#filter the blank in the column "Age_Group" and rename the new data as raw_data2
+raw_data2 <- Covid_19 %>%
+  filter(`Age_Group` != "")
+
+#save the document as cleaned_data.csv in data section of inputs
+write_csv(raw_data2,"inputs/data/cleaned_data.csv")
+
+
